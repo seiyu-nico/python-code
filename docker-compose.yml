@@ -1,0 +1,29 @@
+version: '3.5'
+services:
+  py:
+    build: ./docker
+    container_name: python37
+    volumes:
+      - src:/code
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      TZ: Asia/Tokyo
+      DISPLAY: :0
+    tty: true
+    networks:
+      default:
+        ipv4_address: 172.16.5.2
+volumes:
+  src:
+    driver_opts:
+      type: none
+      device: $PWD/src
+      o: bind
+networks:
+  default:
+    name: py_net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.5.0/24
